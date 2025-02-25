@@ -171,8 +171,7 @@ def create_new_studygroup():
         return redirect(url_for('ViewStudygroups'))
     return "Error creating study group", 500
 
-if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=5000, debug=False)
+
 
 @app.route('/study-groups/all')
 @login_required
@@ -523,3 +522,7 @@ def update_password():
         flash(message, 'error')
     
     return redirect(url_for('profile'))
+
+
+if __name__ == '__main__':
+    app.run(host='127.0.0.1', port=5000, debug=True)
