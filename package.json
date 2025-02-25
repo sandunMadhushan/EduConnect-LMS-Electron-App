@@ -1,0 +1,48 @@
+{
+    "name": "educonnect-lms",
+    "version": "1.0.0",
+    "description": "EduConnect Learning Management System",
+    "main": "electron/main.js",
+    "scripts": {
+        "start": "electron .",
+        "build": "electron-builder",
+        "postinstall": "pip install -r requirements-win.txt --user"
+    },
+    "build": {
+        "appId": "com.educonnect.lms",
+        "productName": "EduConnect LMS",
+        "files": [
+            "electron/**/*",
+            "static/**/*",
+            "templates/**/*",
+            "app.py",
+            "database.py",
+            "requirements.txt"
+        ],
+        "extraResources": [
+            {
+                "from": "uploads",
+                "to": "uploads"
+            }
+        ],
+        "win": {
+            "target": [
+                "nsis"
+            ]
+        },
+        "mac": {
+            "target": [
+                "dmg"
+            ]
+        },
+        "linux": {
+            "target": [
+                "AppImage"
+            ]
+        }
+    },
+    "devDependencies": {
+        "electron": "^22.3.27",
+        "electron-builder": "^25.1.8"
+    }
+}

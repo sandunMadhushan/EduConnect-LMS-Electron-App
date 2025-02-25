@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EduConnect LMS</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/styles.css') }}"
+    />
+  </head>
+  <body class="body">
+    <div class="spinner-container">
+      <div class="spinner-content">
+        <div class="spinner-wrapper">
+          <div class="spinner"></div>
+        </div>
+        <div class="spinner-text">Sending Reset Link...</div>
+      </div>
+    </div>
+    <div class="auth-container">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+              {% for category, message in messages %}
+                  <div class="alert alert-{{ category }}">
+                      {{ message }}
+                  </div>
+              {% endfor %}
+          {% endif %}
+      {% endwith %}
+      <div class="auth-card">
+        <!-- Toggle Buttons -->
+        <div class="toggle-buttons">
+          <button id="login-toggle" class="toggle-btn active">Login</button>
+          <button id="signup-toggle" class="toggle-btn">Sign Up</button>
+        </div>
+
+        <!-- Forms Container -->
+        <div class="forms-wrapper">
+          <!-- Login Form -->
+          <form id="login-form" class="auth-form {% if not show_reset_form %}active-form{% endif %}" action="/login" method="post">
+            <h1>Login</h1>
+            <div class="form-group">
+              <label for="login-email">Email Address</label>
+              <input
+                type="email"
+                id="login-email"
+                name="email"
+                placeholder="Enter your email"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="login-password">Password</label>
+              <input
+                type="password"
+                id="login-password"
+                name="password"
+                placeholder="Enter your password"
+                required
+              />
+              <button type="button" id="forgot-password-btn" class="forgot-password-link">Forgot Password?</button>
+            </div>
+            <div class="form-group">
+              <button type="submit" class="form-btn">Login</button>
+            </div>
+          </form>
+
+          <!-- Signup Form -->
+          <form id="signup-form" class="auth-form" {% if not show_reset_form %}active-form{% endif %} action="/signup" method="post">
+            <h1>Sign Up</h1>
+            <div class="form-group">
+              <label for="signup-name">Full Name</label>
+              <input
+                type="text"
+                id="signup-name"
+                name="name"
+                placeholder="Enter your full name"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="signup-email">Email Address</label>
+              <input
+                type="email"
+                id="signup-email"
+                name="email"
+                placeholder="Enter your email"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="signup-password">Password</label>
+              <input
+                type="password"
+                id="signup-password"
+                name="password"
+                placeholder="Create a password"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="signup-confirm-password">Confirm Password</label>
+              <input
+                type="password"
+                id="signup-confirm-password"
+                name="confirm-password"
+                placeholder="Confirm your password"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <button type="submit" class="form-btn">Sign Up</button>
+            </div>
+          </form>
+
+          <!-- Reset Password Request Form -->
+          <form id="forgot-password-form" class="auth-form" {% if not show_reset_form %}active-form{% endif %} action="/forgot-password" method="post">
+            <h1>Reset Password</h1>
+            <div class="form-group">
+              <label for="forgot-email">Email Address</label>
+              <input
+                type="email"
+                id="forgot-email"
+                name="email"
+                placeholder="Enter your email"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <button type="submit" class="form-btn">Send Reset Link</button>
+            </div>
+            <div class="form-group">
+              <button type="button" class="back-to-login-btn">Back to Login</button>
+            </div>
+          </form>
+
+          <!-- Reset Password Form (shown after clicking email link) -->
+          <form id="reset-password-form" class="auth-form {% if not show_reset_form %}active-form{% endif %}" action="/reset-password/{{ reset_token }}" method="post">
+            <h1>Set New Password</h1>
+            <div class="form-group">
+              <label for="new-password">New Password</label>
+              <input
+                type="password"
+                id="new-password"
+                name="password"
+                placeholder="Enter new password"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="confirm-new-password">Confirm New Password</label>
+              <input
+                type="password"
+                id="confirm-new-password"
+                name="confirm-password"
+                placeholder="Confirm new password"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <button type="submit" class="form-btn">Reset Password</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Get elements
+      const loginToggle = document.getElementById("login-toggle");
+      const signupToggle = document.getElementById("signup-toggle");
+      const formsWrapper = document.querySelector(".forms-wrapper");
+      const loginForm = document.getElementById("login-form");
+      const signupForm = document.getElementById("signup-form");
+      const forgotPasswordForm = document.getElementById("forgot-password-form");
+      const forgotPasswordBtn = document.getElementById("forgot-password-btn");
+      const backToLoginBtn = document.querySelector(".back-to-login-btn");
+      const spinnerContainer = document.querySelector(".spinner-container");
+
+      // Toggle between login and signup
+      loginToggle.addEventListener("click", () => {
+        formsWrapper.classList.remove("sign-up-mode", "reset-password-mode", "forgot-password-mode",);
+        formsWrapper.classList.remove("forgot-password-mode");
+        loginToggle.classList.add("active");
+        signupToggle.classList.remove("active");
+      });
+
+      signupToggle.addEventListener("click", () => {
+        formsWrapper.classList.add("sign-up-mode");
+        formsWrapper.classList.remove("forgot-password-mode", "reset-password-mode");
+        signupToggle.classList.add("active");
+        loginToggle.classList.remove("active");
+      });
+
+      // Toggle forgot password form
+      forgotPasswordBtn.addEventListener("click", () => {
+        formsWrapper.classList.add("forgot-password-mode");
+        formsWrapper.classList.remove("sign-up-mode", "reset-password-mode");
+      });
+
+      // Back to login from forgot password
+      backToLoginBtn.addEventListener("click", () => {
+        formsWrapper.classList.remove("forgot-password-mode", "reset-password-mode");
+        loginToggle.classList.add("active");
+        signupToggle.classList.remove("active");
+      });
+
+      // Form validation
+      loginForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const email = document.getElementById("login-email").value;
+        const password = document.getElementById("login-password").value;
+
+        if (email.trim() === "" || password.trim() === "") {
+          alert("Please fill in all fields before logging in.");
+          return;
+        }
+        loginForm.submit();
+      });
+
+      signupForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const name = document.getElementById("signup-name").value;
+        const email = document.getElementById("signup-email").value;
+        const password = document.getElementById("signup-password").value;
+        const confirmPassword = document.getElementById("signup-confirm-password").value;
+
+        if (!name || !email || !password || !confirmPassword) {
+          alert("Please fill in all fields.");
+          return;
+        }
+
+        if (password !== confirmPassword) {
+          alert("Passwords do not match!");
+          return;
+        }
+
+        signupForm.submit();
+      });
+
+      forgotPasswordForm.addEventListener("submit", function (e) {
+        e.preventDefault(); 
+            
+        spinnerContainer.style.display = "flex";
+        setTimeout(() => {  
+          spinnerContainer.style.display = "none";
+          forgotPasswordForm.submit();
+        }, 4000);
+      });
+
+      // Check if the reset password form should be shown
+      const urlParams = new URLSearchParams(window.location.search);
+      const showResetForm = urlParams.has("reset_token") || "{{ show_reset_form }}" === "True";
+
+      if (showResetForm) {
+        formsWrapper.classList.add("reset-password-mode");
+        formsWrapper.classList.remove("sign-up-mode", "forgot-password-mode");
+        loginToggle.classList.remove("active");
+        signupToggle.classList.remove("active");
+      }
+      // Debugging: Log the classes and styles
+      console.log("Forms wrapper classes:", formsWrapper.classList);
+      console.log("Login toggle display:", window.getComputedStyle(loginToggle).display);
+      console.log("Signup toggle display:", window.getComputedStyle(signupToggle).display);
+
+      // Debugging: Hide toggle buttons with JavaScript
+      if (showResetForm) {
+        loginToggle.style.display = "none";
+        signupToggle.style.display = "none";
+      }      
+    </script>
+  </body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Discussion Forums - EduConnect LMS</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/styles.css') }}"
+    />
+  </head>
+  <body>
+    <div class="dashboard">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="logo">
+          <img
+            src="{{ url_for('static', filename='images/logo.png') }}"
+            alt="Logo"
+          />
+        </div>
+        <ul class="menu">
+          <li>
+            <a href="{{ url_for('dashboard') }}">Dashboard</a>
+          </li>
+          <li><a href="{{ url_for('studygroups') }}">Study Groups</a></li>
+          <li>
+            <a href="{{ url_for('discussionforums') }}" class="active"
+              >Discussion Forums</a
+            >
+          </li>
+          <li><a href="{{ url_for('aitools') }}">AI Tools</a></li>
+          <li><a href="{{ url_for('studysessions') }}">Study Sessions</a></li>
+          <li><a href="{{ url_for('profile') }}">Profile</a></li>
+          <li><a href="{{ url_for('logout') }}">Logout</a></li>
+        </ul>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <header class="header">
+          <div class="header-text">
+            <h1>Discussion Forums</h1>
+            <p>Ask questions and get answers from peers or lecturers.</p>
+          </div>
+        </header>
+        <section class="content">
+          <div class="widget">
+            <h2>Post a Question</h2>
+            <p>Create a new discussion thread and engage with others.</p>
+            <a href="{{ url_for('post_a_question') }}">Post Now</a>
+          </div>
+          <div class="widget">
+            <h2>Browse Forums</h2>
+            <p>Explore and contribute to existing forum threads.</p>
+            <a href="{{ url_for('ViewQuestions') }}">Browse Forums</a>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+  </body>
+</html>
