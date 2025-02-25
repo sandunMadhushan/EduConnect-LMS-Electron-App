@@ -8,6 +8,14 @@
 
 > **⚠️ Note:** The site may take up to **50 seconds** if inactive
 
+---
+
+> **📥 Download as Standalone Application:**  
+
+> EduConnect-LMS can also be downloaded as a standalone desktop application built with Electron. Click the link below to get the latest version.
+
+[Download the Desktop App from Releases](https://github.com/sandunMadhushan/EduConnect-LMS-Electron-App/releases)
+
 </div>
 
 EduConnect-LMS is a collaborative learning management system designed to facilitate interaction between students, demonstrators, lecturers, and study groups. The platform integrates AI-powered tools to enhance the learning experience while providing a robust environment for academic collaboration.
@@ -67,6 +75,9 @@ EduConnect-LMS is a collaborative learning management system designed to facilit
 - API endpoints for user management, study groups, and content delivery
 - Secure API authentication and authorization
 - Microsoft Azure Communication Services for email notifications
+
+### ⚡  Desktop App
+- Electron for building cross-platform desktop applications
 
 ## 🚀 Installation
 
