@@ -4,17 +4,19 @@
 
 <div align="center">
 
-[![Live Demo](https://img.shields.io/badge/✨_Live_Demo-Click_Here-2ea44f?style=for-the-badge)](https://educonnect-lms.onrender.com/)
-
-> **⚠️ Note:** The site may take up to **50 seconds** if inactive
-
----
-
-> **📥 Download as Standalone Application:**  
+ > **📥 Download as Standalone Application:**  
 
 > EduConnect-LMS can also be downloaded as a standalone desktop application built with Electron. Click the link below to get the latest version.
 
 [Download the Desktop App from Releases](https://github.com/sandunMadhushan/EduConnect-LMS-Electron-App/releases)
+
+---
+OR
+> Use web-based LMS here 👇
+
+[![Live Demo](https://img.shields.io/badge/✨_Live_Demo-Click_Here-2ea44f?style=for-the-badge)](https://educonnect-lms.onrender.com/)
+
+> **⚠️ Note:** The site may take up to **50 seconds** if inactive
 
 </div>
 
